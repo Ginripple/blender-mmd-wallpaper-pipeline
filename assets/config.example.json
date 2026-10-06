@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "generated_prefixes": ["WP_", "TOON_", "TEST_"],
+  "working_directories": ["working", "generated", "exports", "reports"],
+  "camera": {
+    "focus_name": "WP_Focus",
+    "yaw_degrees": 15.0,
+    "pitch_degrees": 8.0,
+    "zoom_min": 0.9,
+    "zoom_max": 1.1
+  },
+  "preview": {
+    "max_consecutive_inconclusive_renders": 2,
+    "prefer_single_frame": true
+  },
+  "runtime_target": {
+    "width": 2560,
+    "height": 1440,
+    "fps": 60
+  }
+}

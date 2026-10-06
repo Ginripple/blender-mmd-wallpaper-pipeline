@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "result_contract": {
+    "skill_selected": "boolean",
+    "phase": "integer|null",
+    "behaviors": "array<string>",
+    "actions": "array<string>",
+    "tool_calls": "array<string>"
+  },
+  "assertion_contract": {
+    "fields": ["skill_selected", "phase", "behaviors", "actions", "tool_calls"],
+    "operators": ["eq", "contains", "not_contains"]
+  },
+  "cases": [
+    {
+      "id": "audit-only",
+      "prompt": "Audit this PMX project. Do not render or modify anything.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": true},
+        {"field": "phase", "operator": "eq", "value": 1},
+        {"field": "behaviors", "operator": "contains", "value": "read_only_audit"},
+        {"field": "actions", "operator": "not_contains", "value": "render"},
+        {"field": "actions", "operator": "not_contains", "value": "modify_source_assets"}
+      ]
+    },
+    {
+      "id": "generic-blender-negative-route",
+      "prompt": "Bevel the selected cube in Blender.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": false}
+      ]
+    },
+    {
+      "id": "third-party-material",
+      "prompt": "Copy the stockings material from another model onto this MMD character.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": true},
+        {"field": "behaviors", "operator": "contains", "value": "inspect_third_party_terms_before_reuse"},
+        {"field": "behaviors", "operator": "contains", "value": "prefer_independent_recreation_when_permission_unclear"},
+        {"field": "actions", "operator": "not_contains", "value": "reuse_unverified_third_party_asset"}
+      ]
+    },
+    {
+      "id": "phase-boundary",
+      "prompt": "Finish the asset audit for phase 1.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": true},
+        {"field": "phase", "operator": "eq", "value": 1},
+        {"field": "behaviors", "operator": "contains", "value": "respect_phase_boundary"},
+        {"field": "actions", "operator": "not_contains", "value": "start_phase_2_toon_work"}
+      ]
+    },
+    {
+      "id": "safe-phase2-continuation",
+      "prompt": "Create a reversible toon preview on the working copy.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": true},
+        {"field": "phase", "operator": "eq", "value": 2},
+        {"field": "behaviors", "operator": "contains", "value": "continue_reversible_phase_work_without_reprompt"}
+      ]
+    },
+    {
+      "id": "unknown-blender-api",
+      "prompt": "Use the installed Blender version to add the appropriate outline method.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": true},
+        {"field": "behaviors", "operator": "contains", "value": "probe_blender_api_before_version_sensitive_action"}
+      ]
+    },
+    {
+      "id": "render-loop-stop",
+      "prompt": "Keep fixing the preview until it looks right.",
+      "assertions": [
+        {"field": "skill_selected", "operator": "eq", "value": true},
+        {"field": "behaviors", "operator": "contains", "value": "stop_after_two_inconclusive_preview_cycles"},
+        {"field": "behaviors", "operator": "contains", "value": "switch_to_diagnosis_after_preview_limit"}
+      ]
+    }
+  ]
+}
